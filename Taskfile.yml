@@ -1,0 +1,49 @@
+version: 3
+
+tasks:
+  clean:
+    desc: Clean
+    cmds:
+      - rm -rf dist
+
+  build:
+    desc: Build
+    cmds:
+      - go mod download
+      - go mod tidy
+      - go build ./...
+
+  test:
+    deps: [ build ]
+    cmds:
+      - ./slf4g-contrib
+
+  dependencyUpdates:
+    desc: Show dependency updates
+    deps: [ install-go-mod-outdated, install-gomajor ]
+    cmds:
+      - go mod download
+      - go mod tidy
+      - go list -u -m -json all | go-mod-outdated -update -direct
+      #- gomajor list
+
+  install-gomajor:
+    cmds:
+      - go install github.com/icholy/gomajor@v0.9.5
+      - asdf reshim golang
+    status:
+      - asdf which gomajor
+
+  install-go-mod-outdated:
+    cmds:
+      - go install github.com/psampaz/go-mod-outdated@v0.8.0
+      - asdf reshim golang
+    status:
+      - asdf which go-mod-outdated
+
+  install-staticcheck:
+    cmds:
+      - go install honnef.co/go/tools/cmd/staticcheck@2023.1.2
+      - asdf reshim golang
+    status:
+      - asdf which staticcheck

@@ -1,0 +1,5 @@
+.task/
+build/
+dist/
+logs/
+output/
