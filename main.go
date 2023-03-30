@@ -8,10 +8,22 @@ import (
 	"github.com/echocat/slf4g/native/color"
 	"github.com/echocat/slf4g/native/consumer"
 	"github.com/echocat/slf4g/native/formatter"
+	"github.com/getsentry/sentry-go"
 	consumer2 "github.com/ngyewch/slf4g-contrib/native/consumer"
+	"os"
+	"time"
 )
 
 func main() {
+	err := sentry.Init(sentry.ClientOptions{
+		Dsn:   os.Getenv("SENTRY_DSN"),
+		Debug: false,
+	})
+	if err != nil {
+		panic(err)
+	}
+	defer sentry.Flush(15 * time.Second)
+
 	native.DefaultProvider.SetLevel(level.Debug)
 	native.DefaultProvider.Consumer = consumer2.NewMultiConsumer(consumer.Default, consumer2.NewSentryConsumer(level.Error))
 	formatter.Default = formatter.NewText(func(v *formatter.Text) {
