@@ -1,9 +1,9 @@
 package consumer
 
 import (
-	"fmt"
 	slf4g "github.com/echocat/slf4g"
 	"github.com/echocat/slf4g/level"
+	"github.com/getsentry/sentry-go"
 	sentry2 "github.com/ngyewch/slf4g-contrib/sentry"
 )
 
@@ -23,6 +23,5 @@ func (consumer *SentryConsumer) Consume(event slf4g.Event, source slf4g.CoreLogg
 	}
 
 	sentryEvent := sentry2.ToSentryEvent(event, source)
-	fmt.Printf("sentryEvent=%+v\n", sentryEvent)
-	//sentry.CaptureEvent(sentryEvent)
+	sentry.CaptureEvent(sentryEvent)
 }
