@@ -16,7 +16,7 @@ tasks:
   test:
     deps: [ build ]
     cmds:
-      - ./slf4g-contrib
+      - go run .
 
   dependencyUpdates:
     desc: Show dependency updates
